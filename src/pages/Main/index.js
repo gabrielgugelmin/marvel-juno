@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { Puff } from 'svg-loaders-react';
 
-import { Container, Title } from '../../styles/global';
-import { SearchForm, SubmitButton, Content } from './styles';
+import { ContainerLarge, Title, ButtonLink, Text } from '../../styles/global';
+import {
+  SearchForm,
+  SubmitButton,
+  Content,
+  List,
+  ListItem,
+  ItemTitle,
+} from './styles';
 
 import api from '../../services/api';
 import authConfig from '../../config/auth';
@@ -14,7 +20,7 @@ export default class Main extends Component {
     search: '',
     result: [],
     isLoading: false,
-    redirect: false,
+    done: false,
   };
 
   handleInputChange = e => {
@@ -37,38 +43,27 @@ export default class Main extends Component {
     this.setState({
       result: response.data.data.results,
       isLoading: false,
-      redirect: true,
+      done: true,
     });
   };
 
   render() {
-    const { search, isLoading, result, redirect } = this.state;
+    const { search, isLoading, result, done } = this.state;
 
-    if (redirect) {
-      return (
-        <Redirect
-          to={{
-            pathname: '/result',
-            state: {
-              result,
-            },
-          }}
-        />
-      );
-    }
     return (
-      <Container>
+      <ContainerLarge>
         <Content>
-          <Title className={redirect ? 'animated' : ''}>
-            Encontre seu herói
-          </Title>
-          <p>
+          <Title animate={done ? 'animate' : ''}>Encontre seu herói</Title>
+          <Text animate={done ? 'animate' : ''}>
             Quer saber tudo sobre seu herói preferido?
             <br />
             Aqui você encontrará tudo sobre ele.
-          </p>
+          </Text>
 
-          <SearchForm onSubmit={this.handleSubmit}>
+          <SearchForm
+            onSubmit={this.handleSubmit}
+            animate={done ? 'animate' : ''}
+          >
             <input
               type="text"
               name="search"
@@ -92,8 +87,50 @@ export default class Main extends Component {
               )}
             </SubmitButton>
           </SearchForm>
+
+          {done && (
+            <>
+              {result.length > 0 ? (
+                <List animate={done ? 'animate' : ''}>
+                  {result.map(item => (
+                    <ListItem key={item.id}>
+                      <div
+                        className="item__img"
+                        style={{
+                          backgroundImage: `url(${item.thumbnail.path}.${item.thumbnail.extension})`,
+                        }}
+                      />
+                      <div className="item__text">
+                        <ItemTitle>{item.name}</ItemTitle>
+                        <p>
+                          {item.description
+                            ? `${item.description.substring(0, 72)}...`
+                            : 'Clique em ver mais para conferir mais detalhes sobre este herói.'}
+                        </p>
+                        {/* <ButtonLink to={`/hero/${encodeURIComponent(item.name)}`}> */}
+                        <ButtonLink
+                          to={{
+                            pathname: `/hero/${encodeURIComponent(item.name)}`,
+                            state: {
+                              hero: item,
+                            },
+                          }}
+                        >
+                          Ver mais
+                        </ButtonLink>
+                      </div>
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Text style={{ textAlign: 'center' }}>
+                  Ops! Não encontramos resultados para sua busca. :(
+                </Text>
+              )}
+            </>
+          )}
         </Content>
-      </Container>
+      </ContainerLarge>
     );
   }
 }
