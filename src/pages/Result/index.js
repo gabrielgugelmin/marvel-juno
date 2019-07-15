@@ -32,8 +32,6 @@ export default class Result extends Component {
     this.setState({
       result,
     });
-
-    console.log(this.props);
   }
 
   render() {
