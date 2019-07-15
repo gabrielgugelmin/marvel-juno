@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import backgroundImage from '../assets/img/bg.jpg';
 
@@ -20,7 +20,8 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased !important;
   }
 
-  button {
+  button,
+  .button {
     align-items: center;
     background-color: #3451ff;
     border-radius: 4px;
@@ -119,6 +120,18 @@ export const ContainerLarge = styled.div`
   }
 `;
 
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    transform: scale(1)
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(.9);
+  }
+`;
+
 export const Title = styled.h1`
   color: #3451ff;
   font-size: 26px;
@@ -128,6 +141,29 @@ export const Title = styled.h1`
   @media (min-width: 768px) {
     font-size: 48px;
   }
+
+  ${props =>
+    props.animate &&
+    css`
+      animation: ${fadeOut} 0.5s forwards 1;
+    `}
+`;
+
+export const Text = styled.p`
+  color: #011638;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.28;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
+
+  ${props =>
+    props.animate &&
+    css`
+      animation: ${fadeOut} 0.5s forwards 1;
+    `}
 `;
 
 export const ButtonLink = styled(Link)`
@@ -160,5 +196,27 @@ export const ButtonLink = styled(Link)`
 `;
 
 export const Section = styled.section`
-  padding-top: 100px;
+  padding: 100px 0;
+`;
+
+export const Back = styled(Link)`
+  align-items: center;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  left: 10px;
+  position: absolute;
+  top: 115px;
+  width: 30px;
+`;
+
+export const Logo = styled(Link)`
+  display: block;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  top: 32px;
+  width: 120px;
+  z-index: 2;
 `;

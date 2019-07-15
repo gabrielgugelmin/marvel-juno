@@ -31,7 +31,7 @@ export default class Main extends Component {
     const { search } = this.state;
 
     const response = await api.get(
-      `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${search}&apikey=${authConfig.apikey}&hash=${authConfig.hash}&ts=${authConfig.timestamp}`
+      `characters?nameStartsWith=${search}&apikey=${authConfig.apikey}&hash=${authConfig.hash}&ts=${authConfig.timestamp}`
     );
 
     this.setState({
@@ -59,7 +59,9 @@ export default class Main extends Component {
     return (
       <Container>
         <Content>
-          <Title>Encontre seu herói</Title>
+          <Title className={redirect ? 'animated' : ''}>
+            Encontre seu herói
+          </Title>
           <p>
             Quer saber tudo sobre seu herói preferido?
             <br />

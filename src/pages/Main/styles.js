@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 export const Content = styled.main`
   display: flex;
@@ -30,6 +30,16 @@ export const Title = styled.h1`
   }
 `;
 
+const goUp = keyframes`
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-300px);
+  }
+`;
+
 export const SearchForm = styled.form`
   margin-top: 40px;
 
@@ -50,6 +60,12 @@ export const SearchForm = styled.form`
       flex: 1;
     }
   }
+
+  ${props =>
+    props.animate &&
+    css`
+      animation: ${goUp} 0.7s forwards 1;
+    `}
 `;
 
 export const SubmitButton = styled.button.attrs(props => ({
